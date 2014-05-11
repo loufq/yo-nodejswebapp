@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    title= "koa,jade,requirejs,yo,grunt,bower start"
+
+    link(rel='stylesheet', href='bootstrap/dist/css/bootstrap.min.css')
+
+    script(src="requirejs/require.js",data-main="js/index",type='text/javascript')
+
+    script(type='text/javascript').
+      if (foo) {
+         bar(1 + 5)
+      }
+  body
+    h1 koa,jade,requirejs,yo,grunt,bower start
