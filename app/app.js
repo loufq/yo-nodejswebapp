@@ -9,6 +9,8 @@ var app = require('koa')(),
 
 var moment = require('moment');
 
+var routes = require('./routes/index.js');
+
 // 使用./public下的静态文件
 app.use(serve('./public'));
 app.use(serve('./bower'));
@@ -22,6 +24,9 @@ app.use(views(__dirname+'/views', {
 
 // 使用路由
 app.use(router(app));
+//
+routes(app);
+
 // x-response-time
 app.use(function *(next){
   var start = new Date;
@@ -45,7 +50,7 @@ app.on('error', function(err, ctx){
 */
 app.use(function *(){
   yield this.render('index', {
-    user: 'John'
+    body: 'halou'
   });
 });
 

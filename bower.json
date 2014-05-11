@@ -8,7 +8,8 @@
     "requirejs": "~2.1.11",
     "jquery.lazyload": "~1.9.3",
     "scrollup": "~2.3.2",
-    "hotkeys": "~0.2.2"
+    "hotkeys": "~0.2.2",
+    "angular": "~1.2.16"
   },
   "devDependencies": {}
 }
