@@ -32,10 +32,10 @@ $  cd app
 $  npm install 
 ```
 
-Run it  [nodemon](https://github.com/remy/nodemon) 
+Run it  
 
 ```bash
-$  nodemon app.js
+$  node --harmony app.js 
 ```
 
 Have Fun
