@@ -32,8 +32,7 @@ $  cd app
 $  npm install 
 ```
 
-Run it  
-
+Run it 
 ```bash
 $  node --harmony app.js 
 ```
