@@ -25,6 +25,7 @@ nodemon app.js
 - 管理员后台
 - 用户帐号管理
 - 通用列表页面管理（主次层级区分的内容管理 catalog/product）
+- 图片上传管理 [参考](https://github.com/arvindr21/expressjs-fileupload)
 
 
 
