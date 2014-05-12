@@ -31,7 +31,9 @@ $  cd app
 ```bash
 $  npm install 
 ```
-[nodemon](https://github.com/remy/nodemon)
+
+Run it  [nodemon](https://github.com/remy/nodemon) 
+
 ```bash
 $  nodemon app.js
 ```
@@ -39,8 +41,8 @@ $  nodemon app.js
 Have Fun
 
 ## TODOS
-- [x] add mongoose/model 
-- [x] add admin client
+- [ ] add mongoose/model 
+- [ ] add admin client
 - [ ] add user client
 - [ ] add common list content manager 
 - [ ] add image update manager [Ref](https://github.com/arvindr21/expressjs-fileupload)
