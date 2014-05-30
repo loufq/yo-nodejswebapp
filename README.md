@@ -1,7 +1,11 @@
 yo nodejsapp
 =========
 nodejs应用开发基本环境设置,
+<<<<<<< HEAD
 用yo webapp 生成的框架基础上改造成 nodejs使用的app，
+=======
+用yo webapp 生成的框架基础上改造成 nodejs使用的app， 
+>>>>>>> FETCH_HEAD
 同时在后段集成了koa，在前端集成了requirejs.
 
 
@@ -29,27 +33,47 @@ $  cd app
 ```
 
 ```bash
+<<<<<<< HEAD
 $  npm install
 ```
 
 Run it
 ```bash
 $  node --harmony app.js
+=======
+$  npm install 
+```
+
+Run it 
+```bash
+$  node --harmony app.js 
+>>>>>>> FETCH_HEAD
 ```
 
 Have Fun
 
 ## TODOS
+<<<<<<< HEAD
 - [ ] add mongoose/model
 - [ ] add admin client
 - [ ] add user client
 - [ ] add common list content manager
+=======
+- [ ] add mongoose/model 
+- [ ] add admin client
+- [ ] add user client
+- [ ] add common list content manager 
+>>>>>>> FETCH_HEAD
 - [ ] add image update manager [Ref](https://github.com/arvindr21/expressjs-fileupload)
 
 ## Support
 If you have any problem or suggestion please open an issue [here](https://github.com/loufq/yo-nodejswebapp/issues).
 
+<<<<<<< HEAD
 ## License
+=======
+## License 
+>>>>>>> FETCH_HEAD
 
 The MIT License
 
