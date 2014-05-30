@@ -35,8 +35,6 @@ $  npm install
 Run it
 ```bash
 $  node --harmony app.js
-=======
-$  npm install 
 ```
 
 Have Fun

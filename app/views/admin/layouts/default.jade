@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+  include ../includes/head
+  
+
+  body
+    #wrap
+      include ../includes/header
+      .container
+        .main-content
+          include ../includes/messages
+          .main-head
+            block main
+          block content
+    include ../includes/footer
+    include ../includes/foot

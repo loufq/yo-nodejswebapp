@@ -1,0 +1,32 @@
+extends layouts/default
+
+block head
+
+block main
+  .row(style='margin:5px 0;')
+    .pull-left
+      button#btnMultiDel.btn.btn-sm.btn-danger(type='button') 批删
+    .col-md-3
+      .input-group
+        input#sKeyword.form-control(type='text', placeholder='搜索')
+        span.input-group-btn
+          button#btnSearch.btn.btn-default(type='button')
+            span.glyphicon.glyphicon-search
+    // pagerContainer
+    div#pagerContainer.pull-right
+  // table
+  .row(style='width: 100%; min-height: 479px; border: 1px solid #ccc;')
+    table.table.table-striped
+      thead
+        tr.cols
+          th.col-md-1(style='width:30px;')
+            input#btnMultiCheckSwitch(type='checkbox')
+          th.col-md-1(style='width:32px;')
+            button#btnAdd.btn.btn-primary.btn-xs(type='button',data-toggle="modal",data-target="#myModal" )
+              span.glyphicon.glyphicon-plus
+          th.col-md-1(style='width:110px;') 操作
+      tbody.dataRows
+block foot
+  script(src="/requirejs/require.js",data-main="/admin/catalog",type='text/javascript')
+
+  include catalogedit

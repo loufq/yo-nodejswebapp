@@ -1,0 +1,22 @@
+extends layouts/default
+
+block head
+
+block main
+  .row(style='margin:5px 0;')
+    .col-md-3
+      .input-group
+        input#sKeyword.form-control(type='text', placeholder='搜索')
+        span.input-group-btn
+          button#btnSearch.btn.btn-default(type='button')
+            span.glyphicon.glyphicon-search
+    // pagerContainer
+    div#pagerContainer.pull-right
+  // table
+  .row(style='width: 100%; min-height: 459px; border: 1px solid #ccc;')
+    table.table.table-striped(style='margin-top:5px;')
+      thead
+        tr.cols
+      tbody.dataRows
+block foot
+  script(src="/requirejs/require.js",data-main="/admin/log",type='text/javascript')

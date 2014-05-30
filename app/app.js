@@ -11,6 +11,7 @@ app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 //使用静态文件
 app.use(serve('./public'));
+app.use(serve('./scripts'));
 app.use(serve('./bower'));
 
 // 使用路由

@@ -8,7 +8,7 @@ var selectFields = ['_id', 'name', 'login_name', 'email', 'type', 'create',
   'status'
 ];
 
-exports.clean = function(callback) {
+exports.clean = function(cb) {
   Model.remove({}, cb);
 };
 
@@ -26,18 +26,18 @@ exports.deleteById = function(id, cb) {
 };
 
 //登陆
-exports.login = function(loginname, pass,cb) {
+exports.login = function(loginname, pass, cb) {
   //return function(cb){
-    if (loginname.length === 0) return cb(new Error('loginname empty'), []);
-    if (pass.length === 0) return cb(new Error('pass empty'), []);
-    Model.findOne({
-      login_name: loginname,
-      pass: pass
-    }, function(err, result) {
-      if (err) return cb(err);
-      if (result == null) return cb(new Error('密码错误'));
-      cb(err, cloner.clone(result, selectFields));
-    });
+  if (loginname.length === 0) return cb(new Error('loginname empty'), []);
+  if (pass.length === 0) return cb(new Error('pass empty'), []);
+  Model.findOne({
+    login_name: loginname,
+    pass: pass
+  }, function(err, result) {
+    if (err) return cb(err);
+    if (result == null) return cb(new Error('密码错误'));
+    cb(err, cloner.clone(result, selectFields));
+  });
   //}
 };
 
@@ -80,7 +80,9 @@ exports.create = function(name, loginname, pass, email, cb) {
   m.email = email;
   m.type = 1;
   m.status = 1;
-  m.save(cb);
+  m.save(function(err, result) {
+    cb(err, result)
+  });
 };
 //更新
 exports.update = function(id, name, loginname, pass, email, cb) {

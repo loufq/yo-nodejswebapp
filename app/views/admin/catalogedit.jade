@@ -1,0 +1,48 @@
+#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+        h4#myModalLabel.modal-title 详细
+      form#saveForm.form-signin(method='post', role='form')
+        .modal-body
+          input(type='hidden', name='_id', value='')
+          input(type='hidden', name='usetype', value='1')
+          .form-group.row
+            .col-sm-4 用户名
+            .col-sm-4 手机号
+            .col-sm-4 旺旺号
+          .form-group.row
+            .col-sm-4
+              input.form-control(type='text',name="name" placeholder='用户名')
+            .col-sm-4
+              input.form-control(type='text',name="mobile" placeholder='用户名')
+            .col-sm-4
+              input.form-control(type='text',name="wangwang" placeholder='用户名')
+          .form-group.row
+            .col-sm-3
+              .btn-group(data-toggle='buttons')
+                label#usetypecount.btn.btn-primary.btn-sm.active
+                  input(type='radio', name='options')
+                  | 计次
+                label#usetypetime.btn.btn-primary.btn-sm
+                  input(type='radio', name='options')
+                  | 按时
+            .col-sm-4
+              input.form-control(type='text',name='usecount', placeholder='次数')
+            .col-sm-4(style='display: none;')
+              input.form-control(type='text',name='useend', placeholder='YYYY/MM/DD')
+          .form-group.row
+            .col-sm-1 备注
+            .col-sm-11
+              textarea.form-control(name="desc" placeholder='备注',rows='2')
+          .form-group.row
+            .col-sm-1 设备
+            .col-sm-11
+              input.form-control(name="device" placeholder='设备ID' )
+        .modal-footer
+          div(style='float: left')
+            input#chkForPass(type='checkbox' style='margin-right:5px;')
+            button#btnForPass.btn.btn-danger.text-left(type='button') 通过审核
+          button.btn.btn-default(type='button', data-dismiss='modal') 关闭
+          button.btn.btn-primary(type='submit') 保存
