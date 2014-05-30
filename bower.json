@@ -16,7 +16,9 @@
     "x-editable": "~1.5.1",
     "jquery-form": "~3.46.0",
     "momentjs": "~2.6.0",
-    "jquery.hotkeys": "*"
+    "jquery.hotkeys": "*",
+    "blueimp-file-upload": "~9.5.7",
+    "blueimp-gallery": "~2.15.0"
   },
   "devDependencies": {}
 }

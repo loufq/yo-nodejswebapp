@@ -23,6 +23,8 @@ routes(app);
 require('./routes/admin/login.js')(app);
 require('./routes/admin/catalog.js')(app);
 require('./routes/admin/log.js')(app);
+require('./routes/admin/uploadManager.js')(app);
+
 require('./routes/api.js')(app);
 //routes split file========================================end
 // 开启服务器
