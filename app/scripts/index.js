@@ -18,7 +18,7 @@ require.config({　　　　
             deps: ['jquery']　
         },
         'hotkeys': {　　　　　　
-            deps: ['jquery']　
+            deps: ['jquery']
         },
     }
 });

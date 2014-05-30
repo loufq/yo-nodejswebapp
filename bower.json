@@ -1,15 +1,21 @@
 {
-  "name": "tbtrade",
-  "private": true,
-  "dependencies": {
-    "bootstrap": "~3.1.1",
-    "jquery": "~2.1.1",
-    "underscore": "~1.6.0",
-    "requirejs": "~2.1.11",
-    "jquery.lazyload": "~1.9.3",
-    "scrollup": "~2.3.2",
-    "hotkeys": "~0.2.2",
-    "angular": "~1.2.16"
-  },
-  "devDependencies": {}
+    "name": "tbtrade",
+    "private": true,
+    "dependencies": {
+        "bootstrap": "~3.1.1",
+        "jquery": "~1.9.0",
+        "underscore": "~1.6.0",
+        "requirejs": "~2.1.11",
+        "jquery.lazyload": "~1.9.3",
+        "scrollup": "~2.3.2",
+        "hotkeys": "~0.2.2",
+        "angular": "~1.2.16",
+        "font-awesome": "~4.0.3",
+        "dynatable": "~0.3.1",
+        "jquery.simplePagination": "*",
+        "x-editable": "~1.5.1",
+        "jquery-form": "~3.46.0",
+        "momentjs": "~2.6.0"
+    },
+    "devDependencies": {}
 }

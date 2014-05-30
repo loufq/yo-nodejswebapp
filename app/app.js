@@ -1,60 +1,30 @@
 "use strict"
 var http = require('http');
+var app = require('koa')();
+var favicon = require('koa-favicon');
+var serve = require('koa-static');
+var router = require('koa-router');
+var config = require('./config/config.js');
+var db = require('./config/db.js');
 
-var app = require('koa')(),
-    favicon = require('koa-favicon'),
-    router = require('koa-router'),
-    serve = require('koa-static'),
-    views = require('koa-views');
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
-var moment = require('moment');
-
-var routes = require('./routes/index.js');
-
-// 使用./public下的静态文件
+//使用静态文件
 app.use(serve('./public'));
 app.use(serve('./bower'));
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
-
-//使用Jade作为模板引擎
-app.use(views(__dirname+'/views', {
-  default: 'jade'
-}));
-
 // 使用路由
 app.use(router(app));
-//
+
+//routes split file========================================start
+var routes = require('./routes/index.js');
 routes(app);
-
-// x-response-time
-app.use(function *(next){
-  var start = new Date;
-  yield next;
-  var ms = new Date - start;
-  this.set('X-Powered-By', 'loufq');
-  this.set('X-Response-Time', ms + 'ms');
-});
-
-// logger
-app.use(function *(next){
-  var start = new Date;
-  yield next;
-  var ms = new Date - start;
-  console.log('%s %s - %s', this.method, this.url, ms);
-});
-/*
-app.on('error', function(err, ctx){
-  console.log('server error %s  %s', err, ctx);
-});
-*/
-app.use(function *(){
-  yield this.render('index', {
-    body: 'halou'
-  });
-});
-
+require('./routes/admin/login.js')(app);
+require('./routes/admin/catalog.js')(app);
+require('./routes/admin/log.js')(app);
+require('./routes/api.js')(app);
+//routes split file========================================end
 // 开启服务器
-http.createServer(app.callback()).listen(3000);
+http.createServer(app.callback()).listen(config.port);
 //http.createServer(app.callback()).listen(3001);
-console.info('Now running on localhost:3000');
+console.info('Now ' + config.name + ' APP running on localhost:' + config.port);
