@@ -14,3 +14,13 @@ module.exports.clone = function clone(obj,selectFields) {
     }
     return copy;
 }
+
+module.exports.copy = function clone(objFrom,objTo) {
+    if (null == objFrom || "object" != typeof objFrom) return objFrom;
+    var copy = {};
+    for (var attr in objFrom) {
+        var hasOwnProperty = objFrom.hasOwnProperty(attr);
+        objTo[attr] = objFrom[attr];
+    }
+    return objTo;
+}

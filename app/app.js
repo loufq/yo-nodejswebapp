@@ -20,8 +20,10 @@ app.use(router(app));
 //routes split file========================================start
 var routes = require('./routes/index.js');
 routes(app);
+require('./routes/api.js')(app);
 require('./routes/admin/login.js')(app);
 require('./routes/admin/catalog.js')(app);
+require('./routes/admin/product.js')(app);
 require('./routes/admin/log.js')(app);
 require('./routes/admin/uploadManager.js')(app);
 

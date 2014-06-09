@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 var config = {
-  "db": "APPName",
+  "db": "PhotoShare",
   "host": "localhost",
   "user": "",
   "pw": "",

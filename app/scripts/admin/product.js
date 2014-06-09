@@ -11,16 +11,16 @@ require.config({　　　　
     "hotkeys": "/jquery.hotkeys/jquery.hotkeys",
     "momentjs": "/momentjs/moment",
     "jquery.form": "/jquery-form/jquery.form",
-    "query-qrcode": "/jquery-qrcode/jquery.qrcode.min"
+    "WebUploader": "/webuploader/dist/webuploader",
   },
   shim: {　　　　
     'bootstrap': {
       deps: ['jquery']　
     },
-    'dynatable': {
+    'WebUploader': {
       deps: ['jquery']　
     },
-    'query-qrcode': {
+    'dynatable': {
       deps: ['jquery']　
     },
     'x-editable': {
@@ -44,74 +44,47 @@ require.config({　　　　
   }
 });
 
-require(["underscore", "jquery", "bootstrap", "dynatable", "x-editable", "hotkeys", "jquery.form",
-    'jquery.simplePagination', 'momentjs', 'query-qrcode'
+require(["underscore", "jquery", 'WebUploader', "bootstrap", "dynatable", "x-editable", "hotkeys",
+    "jquery.form",
+    'jquery.simplePagination', 'momentjs'
   ],
-  function(_, $) {
-    init(_, $);
+  function(_, $, WebUploader) {
+    init(_, $, WebUploader);
   });
 
-var pagerInfoUrl = '/admin/catalog/pagerinfo';
-var pagerlistUrl = '/admin/catalog/pagerlist';
-var detailUrl = '/admin/catalog/detail';
-var updateUrl = '/admin/catalog/update';
-var delUrl = '/admin/catalog/del';
-var delMultiUrl = '/admin/catalog/delmulti';
-var cols = ['序号', '编号', '名称', '备注', '图片管理', ''];
+var pagerInfoUrl = '/admin/:catalogId/product/pagerinfo';
+var pagerlistUrl = '/admin/:catalogId/product/pagerlist';
+var delUrl = '/admin/:catalogId/product/del';
+var delMultiUrl = '/admin/prodrctdelmulti';//'/admin/:catalogId/product/delmulti';
+var uploadUrl = '/admin/:catalogId/product/upload';
+
+var cols = ['序号', '时间', '图片地址'];
 
 var pageIndex = 0;
 var C_PageSize = 10;
-
-var init = function(_, $) {
+var catalogId = null;
+var uploader = null;
+var init = function(_, $, WebUploader) {
   $(function() {
+    catalogId = $('#pageId').val();
+    initWebUpload(WebUploader);
     initMultiDel();
     //MenuActive
     $(function() {
-      $('#menuCatalog').addClass('active');
+      $('#menuProduct').addClass('active');
     });
     _.each(cols, function(ele, idx) {
       $('.cols').append('<th>' + ele + '</th>');
     });
-    //初始化控件======================
-    var initUpdateForm = function() {
-      $("form#saveForm :input[name=_id]").val("");
-      $("form#saveForm :input[type=text]").each(function() {
-        var input = $(this).val("");
-      });
-      $("form#saveForm textarea").each(function() {
-        var input = $(this).val("");
-      });
-    }
-    //添加触发
-    $(function() {
-      $("#btnAdd").on('click', function() {
-        $("#btnDel").hide();
-        initUpdateForm();
-      });
-      $("#btnMultiDel").on('click', function() {
-
-      });
-    });
-    //列表数据显示
-    $(function() {
-      $("#btnSearch").click(function() {
-        pager_init();
-      });
-      $("#sKeyword").on("click", function() {
-        $(this).select();
-      });
-      pager_init();
-    });
+    pager_init();
 
     function pager_init() {
       $("#pagerContainer").html('');
       $.ajax({
         type: 'GET',
-        url: pagerInfoUrl,
+        url: pagerInfoUrl.replace(':catalogId', catalogId),
         dataType: 'json',
-        data: {
-          "sKeyword": $("#sKeyword").val()
-        },
+        data: {},
         cache: false,
         error: function() {
           alert('出错了！');
@@ -138,12 +111,11 @@ var init = function(_, $) {
       pageIndex = pageNumber;
       $.ajax({
         type: 'GET',
-        url: pagerlistUrl,
+        url: pagerlistUrl.replace(':catalogId', catalogId),
         dataType: 'json',
         data: {
           "pageSize": C_PageSize,
-          "pageIndex": pageNumber - 1,
-          "sKeyword": $("#sKeyword").val()
+          "pageIndex": pageNumber - 1
         },
         cache: false,
         error: function() {
@@ -152,14 +124,10 @@ var init = function(_, $) {
         success: function(data) {
           var htmlContent = ""
           var iIndex = 1;
-          $(".dataRows").html("");
           $.each(data.result, function(index, value) {
-            htmlContent = fillRowData(index, value);
-            var jObj = $(htmlContent);
-            $(".dataRows").append(jObj);
-            popoverQRCodeInit(jObj.find('button:last'));
+            htmlContent += fillRowData(index, value);
           });
-
+          $(".dataRows").html("").html(htmlContent);
           attachMultiDel();
         }
       });
@@ -171,110 +139,40 @@ var init = function(_, $) {
       trHtml += '<td><button class="btn btn-xs btn-primary" onclick="javascript: beginEdit(\'' +
         value["_id"] + '\')">详细</button></td>';
       trHtml += "<td>" + ((pageIndex - 1) * C_PageSize + (++iIndex)) + "</td>";
-      trHtml += "<td>" + value['code'] + "</td >";
-      trHtml += "<td>" + value['name'] + "</td >";
-      trHtml += "<td>" + value['desc'] + "</td >";
-      trHtml += '<td><a  href="/admin/' + value['_id'] + '/product' + '">图片管理</a></td>';
-      trHtml += '<td><button class="btn btn-xs btn-primary" data="' + value["_id"] +
-        '" onclick="javascript: popoverQRCode(\'' +
-        value["_id"] + '\')">二维码</button></td>';
+      trHtml += "<td>" + value['create'] + "</td >";
+      trHtml += "<td><img width=100 height=100 src='" + value['imageurl'] + "'/>" + "</td >";
       trHtml += "</tr>";
       return trHtml;
     };
-
-    //存======================
-    $(function() {
-      $('#saveForm').ajaxForm({
-        dataType: 'json',
-        url: updateUrl,
-        beforeSubmit: function(formData, jqForm, options) {
-          var queryString = $.param(formData);
-          //alert('About to submit: \n\n' + queryString);
-          return true;
-        },
-        success: function(jsonData) {
-          if (jsonData.code > 0) {
-            alert(jsonData.msg);
-          } else {
-            loadListData(1);
-            $("#myModal").modal("hide");
-          }
-        }
-      });
-    });
-    //删======================
-    $(function() {
-      $("#btnDelYes").click(function() {
-        $.ajax({
-          type: 'POST',
-          url: delUrl,
-          dataType: 'json',
-          data: {
-            "_id": $("form#saveForm :input[name=_id]").val(),
-          },
-          cache: false,
-          error: function() {
-            alert('出错了！');
-          },
-          success: function(jsonD) {
-            loadListData(1);
-            $("#myModal").modal("hide");
-            $("#myConfirmModal").modal("hide");
-          }
-        });
-      })
-    });
-
   });
-}; //init
-
-//查======================
-var beginEdit = function(itemID) {
-  $.getJSON(detailUrl, {
-    _id: itemID,
-  }).fail(function() {
-    alert('出错了！');
-  }).done(function(data) {
-    if (data.code > 0) {
-      alert(data.msg);
-      return;
+};
+//http://fex.baidu.com/webuploader/getting-started.html
+var initWebUpload = function(WebUploader) {
+  uploader = WebUploader.create({
+    auto: true,
+    swf: 'http://cdn.bootcss.com/webuploader/0.1.0/Uploader.swf',
+    server: uploadUrl.replace(':catalogId', catalogId),
+    pick: '#btnAdd',
+    resize: false,
+    accept: {
+      title: 'Images',
+      extensions: 'gif,jpg,jpeg,bmp,png',
+      mimeTypes: 'image/*'
     }
-    $("form#saveForm :input").each(function() {
-      var name = $(this).attr("name");
-      if (data.result[name] != null) {
-        $(this).val(data.result[name]);
-      }
-    });
-    $("#btnDelYes").show();
-    $("#myModal").modal("show");
   });
-}
-//查======================
-var popoverQRCodeInit = function(jObj) {
-  var itemID = jObj.attr('data');
-  var options = {
-    html: true,
-    animation: false,
-    placement: top,
-    title: '二维码',
-    content: '<div id="qrcode' + itemID + '"></div>'
-  };
-  var myPop = jObj.popover(options);
-
-  myPop.on('shown.bs.popover', function() {
-    var qrcontent = window.location.origin +'/' + 'API/QRCode/' + itemID;
-    $('#qrcode' + itemID).qrcode({
-      width: 128,
-      height: 128,
-      text: qrcontent
-    });
-  })
-}
-var popoverQRCode = function(itemID) {
-
+  // 当有文件被添加进队列的时候
+  uploader.on('fileQueued', function(file) {});
+  uploader.on('uploadProgress', function(file, percentage) {});
+  uploader.on('uploadSuccess', function(file) {
+    alert('已上传');
+  });
+  uploader.on('uploadError', function(file) {
+    alert('上传出错');
+  });
+  uploader.on('uploadComplete', function(file) {});
 }
 
-//搜索功能
+//
 var initMultiDel = function() {
   $("#btnMultiCheckSwitch").on("change", function() {
     var isChk = this.checked;
@@ -302,7 +200,7 @@ var initMultiDel = function() {
     };
     $.ajax({
       type: 'POST',
-      url: delMultiUrl,
+      url: delMultiUrl.replace(':catalogId', catalogId),
       dataType: 'json',
       data: {
         "detailIDs": list.toString(),

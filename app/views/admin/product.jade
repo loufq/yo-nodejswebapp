@@ -1,17 +1,13 @@
 extends layouts/default
 
 block head
-
+link(rel='stylesheet', href='/webuploader/dist/webuploader.css')
 block main
+  h1
+  input#pageId(type='hidden', value='#{pageId}')
   .row(style='margin:5px 0;')
     .pull-left
       button#btnMultiDel.btn.btn-sm.btn-danger(type='button') 批删
-    .col-md-3
-      .input-group
-        input#sKeyword.form-control(type='text', placeholder='搜索')
-        span.input-group-btn
-          button#btnSearch.btn.btn-default(type='button')
-            span.glyphicon.glyphicon-search
     // pagerContainer
     div#pagerContainer.pull-right
   // table
@@ -26,6 +22,4 @@ block main
               span.glyphicon.glyphicon-plus
       tbody.dataRows
 block foot
-  script(src="/requirejs/require.js",data-main="/admin/catalog",type='text/javascript')
-
-  include catalogedit
+  script(src="/requirejs/require.js",data-main="/admin/product",type='text/javascript')

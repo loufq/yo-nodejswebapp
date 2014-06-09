@@ -1,6 +1,6 @@
 'use strict';
 
-var table_name = 'Catalog';
+var table_name = 'Product';
 
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
@@ -8,27 +8,18 @@ var mongoose = require('mongoose'),
 
 var schema = new Schema({
   name: {
-    type: String,
-    index: {
-      unique: true
-    }
-  },
-  code: {
     type: String
   },
-  type: {
-    type: Number
+  catalog: {
+    type: Schema.Types.ObjectId,
+    ref: 'Catalog'
   },
   status: {
     type: Number
-  },
+  }, //
   desc: {
     type: String
-  },
-  products: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Product'
-  }],
+  }, //
   create: {
     type: Date,
     default: Date.now
@@ -39,6 +30,6 @@ var schema = new Schema({
 module.exports = mongoose.model(table_name, schema);
 
 module.exports.getObjId = function(idString) {
-  var id = mongoose.Types.ObjectId(idString);
-  return id;
+    var id = mongoose.Types.ObjectId(idString);
+    return id;
 }

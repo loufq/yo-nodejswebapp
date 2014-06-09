@@ -4,7 +4,7 @@ var parse = require('co-body');
 var thunkify = require('thunkify');
 var views = require('co-views');
 var render = views('views', {
-default: 'jade'
+  default: 'jade'
 });
 
 var PModel = require('../../proxy/catalog.js');
@@ -16,6 +16,8 @@ function routes(app) {
   app.get('/admin/catalog/detail', detail);
   app.post('/admin/catalog/update', update);
   app.post('/admin/catalog/del', del);
+  app.post('/admin/catalog/delmulti', delmulti);
+
 }
 
 var defaultIndex = function * () {
@@ -51,6 +53,7 @@ var pagerInfo = function * () {
 }
 //pagerlist
 var pagerlist = function * () {
+
   var keyword = this.request.query.keyword;
   if (!keyword) keyword = '';
   var pageIndex = this.request.query.pageIndex;
@@ -89,20 +92,26 @@ var detail = function * () {
     };
   } finally {}
 }
-//update
+//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－update
 var update = function * () {
   var body = yield parse(this, {
     limit: '1kb'
   });
   var _id = body._id;
   var name = body.name;
-  var imgurl = body.imgurl;
+  var code = body.code;
   var type = parseInt(body.type) || 1;
-  var status =parseInt(body.status) || 1;
+  var status = parseInt(body.status) || 1;
   var desc = body.desc;
   var objItem = {
-    _id:_id,name:name,imgurl:imgurl,type:type,status:status,desc:desc
+    _id: _id,
+    name: name,
+    code: code,
+    type: type,
+    status: status,
+    desc: desc
   };
+
   if (!_id.length) { //update
     var cfun = thunkify(PModel.create);
     try {
@@ -121,6 +130,7 @@ var update = function * () {
   } else { //new
     var cfun = thunkify(PModel.update);
     try {
+
       var result = yield cfun(objItem);
       this.body = {
         code: 0,
@@ -148,11 +158,36 @@ var del = function * () {
       code: 0,
       msg: ''
     };
-  } catch (variable) {
+  } catch (e) {
     this.body = {
       code: 1,
       msg: e.message
     };
   } finally {}
 }
+
+//delmulti
+var delmulti = function * () {
+  var body = yield parse(this, {
+    limit: '1kb'
+  });
+
+  var detailIDs = body.detailIDs.split(',');
+  var cfun = thunkify(PModel.deleteByIds);
+  try {
+    var result = yield cfun(detailIDs);
+    this.body = {
+      code: 0,
+      msg: ''
+    };
+  } catch (e) {
+    this.body = {
+      code: 1,
+      msg: e.message
+    };
+  } finally {}
+}
+
+
+
 module.exports = routes;

@@ -1,11 +1,11 @@
 var co = require('co');
 var parse = require('co-body');
 var thunkify = require('thunkify');
+var views = require('co-views');
+var render = views('views',{ default: 'jade' });
 
 var PAdmin = require('../../proxy/admin.js');
 
-var views = require('co-views');
-var render = views('views',{ default: 'jade' });
 
 function routes(app) {
   app.get('/admin/login', login);
